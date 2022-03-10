@@ -55,7 +55,7 @@ This is a simple explaination to have a general overview about my source code :
 
 This is my first gui application in cpp, so I am sure there is a lot of imporovements to do and bugs to fix. For this reason, I made this todo list to store the next steps :
 
-- [ ] Enable saving file
+- [x] Enable saving file
 - [ ] Add size and type constraints to files
 - [ ] Add settings page - to change fonts, sizes and colors
 - [ ] Add arabic support

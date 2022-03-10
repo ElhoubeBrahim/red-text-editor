@@ -42,10 +42,14 @@ class Document
         void handle_scroll(sf::Event event);
         void handle_user_input(sf::Event event);
         void handle_arrows_press(sf::Event &event);
+        void handle_shortcuts(sf::Event &event);
 
     private:
         std::vector<int> get_document_coords(int x, int y);
         bool file_exists();
+        void save();
+
+        bool ctrl_is_pressed();
 
         void handle_vertical_scroll(sf::Event event);
         void handle_horizontal_scroll(sf::Event event);

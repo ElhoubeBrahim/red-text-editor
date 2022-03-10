@@ -265,6 +265,9 @@ void Document::handle_horizontal_scroll(sf::Event event) {
  * @param event 
  */
 void Document::handle_user_input(sf::Event event) {
+    // If shortcut mode is activated
+    if (this->ctrl_is_pressed()) return;
+
     // Get the typed char
     sf::Uint32 c = event.text.unicode;
     // Get the current document coords
@@ -335,6 +338,9 @@ void Document::handle_user_input(sf::Event event) {
  * @param event 
  */
 void Document::handle_arrows_press(sf::Event &event) {
+    // If shortcut mode is activated
+    if (this->ctrl_is_pressed()) return;
+
     // Get the document coords
     int row = this->get_cursor()->row_number();
     int col = this->get_cursor()->col_number();
@@ -375,4 +381,50 @@ void Document::handle_arrows_press(sf::Event &event) {
             break;
     }
 
+}
+
+/**
+ * @brief Handle keyboard shortcuts : ctrl + s, ctrl + z, ctrl + c ...
+ * 
+ * @param event 
+ */
+void Document::handle_shortcuts(sf::Event &event) {
+    // Get the document coords
+    int row = this->get_cursor()->row_number();
+    int col = this->get_cursor()->col_number();
+
+    // If "ctrl + s" is pressed
+    if (this->ctrl_is_pressed() && event.key.code == sf::Keyboard::S) {
+        // Save the file
+        std::cout << "Saving File ..." << '\n';
+        this->save();
+        std::cout << "File saved " << Utils::colorify(this->file_path, "\033[32m") << '\n';
+    }
+}
+
+/**
+ * @brief Save the file
+ * 
+ */
+void Document::save() {
+    // Open the file
+    std::ofstream file(this->file_path);
+
+    // Loop through editor lines
+    for (EditorLine line : this->lines) {
+        // Write the line
+        file << line.get_content() << '\n';
+    }
+
+    // Close the file
+    file.close();
+}
+
+/**
+ * @brief Check if shortcuts mode is activated
+ * 
+ * @return true | false 
+ */
+bool Document::ctrl_is_pressed() {
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
 }

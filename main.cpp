@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
             // On user press => Handle special buttons: ctrl, shift, arrows, alt ...
             if (event.type == sf::Event::KeyPressed) {
                 document.handle_arrows_press(event);
+                document.handle_shortcuts(event);
             }
         }
 
