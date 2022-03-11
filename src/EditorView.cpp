@@ -15,7 +15,7 @@ EditorView::EditorView() {}
  */
 EditorView::EditorView(sf::RenderWindow * window) {
     // Create a new window view
-    this->camera = sf::View(sf::FloatRect(0, 0, window->getSize().x, window->getSize().y));
+    this->camera = sf::View(sf::FloatRect(0, TOP_MARGIN, window->getSize().x, window->getSize().y - TOP_MARGIN));
 }
 
 /**

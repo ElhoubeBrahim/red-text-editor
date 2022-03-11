@@ -132,10 +132,10 @@ void Cursor::move_to(int row, int col) {
     }
 
     // If the cursor is in the top of the camera
-    if (y <= cam_y - (height / 2) + LINE_HEIGHT) {
+    if (y <= cam_y - (height / 2) + (2 * LINE_HEIGHT)) {
         this->view->set_center(
             this->view->get_camera().getCenter().x,
-            cam_y - (cam_y - (height / 2) - y) - (row != 0 ? LINE_HEIGHT : 0)
+            cam_y - (cam_y - (height / 2) - y) - (3 * LINE_HEIGHT)
         );
     }
 

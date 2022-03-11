@@ -103,10 +103,13 @@ int main(int argc, char *argv[])
         window.clear(window_background);
         // Set the view
         window.setView(document.get_view());
-        // Draw the editor header
-        header.draw(&window);
         // Draw the editor lines
         document.draw(&window);
+        // Draw the editor header
+        window.setView(sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y - TOP_MARGIN)));
+        header.draw(&window);
+        // Reset the view
+        window.setView(document.get_view());
         // Show the window
         window.display();
     }
