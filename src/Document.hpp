@@ -31,6 +31,9 @@ class Document
         void load_lines();
         void load_fonts();
 
+        std::string get_file_name();
+        sf::Font * get_main_font();
+
         void load_view(sf::RenderWindow * window);
         sf::View get_view();
         void resize_view(float height, float width);

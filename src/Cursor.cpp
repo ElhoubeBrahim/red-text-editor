@@ -32,7 +32,7 @@ Cursor::Cursor(int row, int col) {
     this->cursor.setFillColor(bgc);
 
     // Put the cursor at the beginning of the document
-    this->cursor.setPosition(LEFT_MARGIN, 0);
+    this->cursor.setPosition(LEFT_MARGIN, TOP_MARGIN);
 }
 
 /**
@@ -84,7 +84,7 @@ void Cursor::move_to(int row, int col) {
 
     // Init coords
     float x = LEFT_MARGIN;
-    float y = row * LINE_HEIGHT;
+    float y = TOP_MARGIN + (row * LINE_HEIGHT);
 
     // If it's not at the beginning of the line
     if (col != 0) {

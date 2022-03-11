@@ -4,3 +4,4 @@
 #define LINE_HEIGHT     30
 #define CHAR_WIDTH      11
 #define LEFT_MARGIN     90
+#define TOP_MARGIN      80

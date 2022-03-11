@@ -77,6 +77,29 @@ void Document::resize_view(float height, float width) {
 }
 
 /**
+ * @brief Get the file name to print in the header as a title
+ * 
+ * @return std::string 
+ */
+std::string Document::get_file_name() {
+    // Get the last position of "/"
+    std::size_t position = this->file_path.find_last_of("/");
+    // get file name
+    std::string file_name = this->file_path.substr(position + 1, this->file_path.length());
+
+    return file_name;
+}
+
+/**
+ * @brief Get the main font
+ * 
+ * @return sf::Font 
+ */
+sf::Font * Document::get_main_font() {
+    return &this->font;
+}
+
+/**
  * @brief Draw the document's content
  * 
  * @param window 

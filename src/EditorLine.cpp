@@ -95,7 +95,7 @@ sf::Text EditorLine::draw_text(std::string content, int x, bool is_content) {
     // Set the text position
     // 65 - bounds.width => rtl text such as line number
     sf::FloatRect bounds = text.getLocalBounds();
-    text.setPosition((is_content) ? x : 65 - bounds.width, LINE_HEIGHT * this->line_number);
+    text.setPosition((is_content) ? x : 65 - bounds.width, TOP_MARGIN + (LINE_HEIGHT * this->line_number));
     
     // Calculate the line width
     if (is_content) this->width += bounds.width + 3;

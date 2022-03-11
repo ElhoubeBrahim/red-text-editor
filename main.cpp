@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "src/Document.hpp"
+#include "src/Header.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,12 @@ int main(int argc, char *argv[])
     Document document((argc > 1) ? argv[1] : "");
 
     /**
+     * Create the editor header
+     * ===================================================
+     */
+    Header header(&document);
+
+    /**
      * Setup window object
      * ===================================================
      */
@@ -22,10 +29,7 @@ int main(int argc, char *argv[])
     document.load_view(&window);
 
     sf::Color window_background(34, 34, 34);
-
     sf::Cursor user_cursor;
-    if (user_cursor.loadFromSystem(sf::Cursor::Text))
-        window.setMouseCursor(user_cursor);
 
     /**
      * Run the editor
@@ -36,6 +40,27 @@ int main(int argc, char *argv[])
         while (window.pollEvent(event)) {
             // On window closed
             if (event.type == sf::Event::Closed) window.close();
+
+            // On mouse move
+            if (event.type == sf::Event::MouseMoved) {
+                // Get cursor coords
+                sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                sf::Vector2f coords = window.mapPixelToCoords(pixelPos);
+
+                int mouse_x = coords.x;
+                int mouse_y = coords.y;
+
+                // If the cursor is inside the documenr
+                if (mouse_x > LEFT_MARGIN && mouse_y > TOP_MARGIN) {
+                    // Change to type cursor
+                    if (user_cursor.loadFromSystem(sf::Cursor::Text))
+                        window.setMouseCursor(user_cursor);
+                } else {
+                    // Change to normal cursor
+                    if (user_cursor.loadFromSystem(sf::Cursor::Arrow))
+                        window.setMouseCursor(user_cursor);
+                }
+            }
 
             // Handle resize
             if (event.type == sf::Event::Resized) {
@@ -55,9 +80,10 @@ int main(int argc, char *argv[])
                     sf::Vector2f coords = window.mapPixelToCoords(pixelPos);
 
                     int mouse_x = coords.x;
-                    int mouse_y = coords.y;
+                    int mouse_y = coords.y - TOP_MARGIN;
 
-                    document.place_cursor_in(mouse_x, mouse_y);
+                    if (mouse_y >= 0)
+                        document.place_cursor_in(mouse_x, mouse_y);
                 }
             }
 
@@ -77,6 +103,8 @@ int main(int argc, char *argv[])
         window.clear(window_background);
         // Set the view
         window.setView(document.get_view());
+        // Draw the editor header
+        header.draw(&window);
         // Draw the editor lines
         document.draw(&window);
         // Show the window
