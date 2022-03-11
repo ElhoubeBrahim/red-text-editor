@@ -9,7 +9,7 @@
 class Header
 {
     private:
-        int height = TOP_MARGIN;
+        int height = TOP_MARGIN - 10;
         int button_width = 30;
         Document * document;
         
