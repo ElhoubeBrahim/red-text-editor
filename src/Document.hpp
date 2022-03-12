@@ -46,11 +46,12 @@ class Document
         void handle_user_input(sf::Event event);
         void handle_arrows_press(sf::Event &event);
         void handle_shortcuts(sf::Event &event);
+        
+        void save();
 
     private:
         std::vector<int> get_document_coords(int x, int y);
         bool file_exists();
-        void save();
 
         bool ctrl_is_pressed();
 

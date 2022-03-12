@@ -15,12 +15,6 @@ int main(int argc, char *argv[])
     Document document((argc > 1) ? argv[1] : "");
 
     /**
-     * Create the editor header
-     * ===================================================
-     */
-    Header header(&document);
-
-    /**
      * Setup window object
      * ===================================================
      */
@@ -30,6 +24,12 @@ int main(int argc, char *argv[])
 
     sf::Color window_background(34, 34, 34);
     sf::Cursor user_cursor;
+
+    /**
+     * Create the editor header
+     * ===================================================
+     */
+    Header header(&document, &window);
 
     /**
      * Run the editor
@@ -75,15 +75,21 @@ int main(int argc, char *argv[])
             // On mouse click => Remove selections and Move cursor
             if (event.type == sf::Event::MouseButtonPressed) {
 
+                // If the left mouse button is clicked
                 if (event.mouseButton.button == sf::Mouse::Left) {
+                    // Get cursor coords
                     sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
                     sf::Vector2f coords = window.mapPixelToCoords(pixelPos);
 
                     int mouse_x = coords.x;
                     int mouse_y = coords.y - TOP_MARGIN;
 
+                    // Move document cursor
                     if (mouse_y >= 0)
                         document.place_cursor_in(mouse_x, mouse_y);
+                    
+                    // Check if a button is clicked in the header
+                    header.handle_click(event);
                 }
             }
 
@@ -107,7 +113,8 @@ int main(int argc, char *argv[])
         document.draw(&window);
         // Draw the editor header
         window.setView(sf::View(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y - TOP_MARGIN)));
-        header.draw(&window);
+        header.set_window(&window);
+        header.draw();
         // Reset the view
         window.setView(document.get_view());
         // Show the window

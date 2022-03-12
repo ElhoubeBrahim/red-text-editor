@@ -12,11 +12,19 @@ class Header
         int height = TOP_MARGIN - 10;
         int button_width = 30;
         Document * document;
+        sf::RenderWindow * window;
         
     public:
-        Header(Document * document);
-        void draw(sf::RenderWindow *window);
+        Header(Document * document, sf::RenderWindow * window);
+        void draw();
         void resize();
+        void handle_click(sf::Event event);
+        void set_window(sf::RenderWindow * window);
+
+    private:
+        void draw_theme_button();
+        void draw_save_button();
+        void draw_file_button();
 };
 
 #endif

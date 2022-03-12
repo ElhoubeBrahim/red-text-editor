@@ -1,15 +1,13 @@
 #include "Header.hpp"
 
-Header::Header(Document * document) {
+Header::Header(Document * document, sf::RenderWindow * window) {
     this->document = document;
+    this->window = window;
 }
 
-void Header::draw(sf::RenderWindow *window) {
-    // Get window width
-    float width = window->getSize().x;
-
+void Header::draw() {
     // Header container
-    sf::RectangleShape container(sf::Vector2f(width, this->height));
+    sf::RectangleShape container(sf::Vector2f(this->window->getSize().x, this->height));
     container.setFillColor(sf::Color(17, 17, 17));
 
     // Adding title to the header
@@ -20,40 +18,92 @@ void Header::draw(sf::RenderWindow *window) {
     title.setCharacterSize(24);
     title.setPosition((this->height / 2) - 10, 20);
 
-    // Generate the theme switcher button
-    sf::Texture bg1;
-    bg1.loadFromFile("assets/images/icons/mode.png", sf::IntRect(0, 0, this->button_width, this->button_width));
-    bg1.setSmooth(true);
-    sf::Sprite theme_button;
-    theme_button.setTexture(bg1, true);
-    theme_button.setPosition(width - 60, (this->height / 2) - (this->button_width / 2));
-
-    // Generate the save button
-    sf::Texture bg2;
-    bg2.loadFromFile("assets/images/icons/save.png", sf::IntRect(0, 0, this->button_width, this->button_width));
-    bg2.setSmooth(true);
-    sf::Sprite save_button;
-    save_button.setTexture(bg2, true);
-    save_button.setPosition(width - (60 + this->button_width + 10), (this->height / 2) - (this->button_width / 2));
-
-    // Generate the theme switcher button
-    sf::Texture bg3;
-    bg3.loadFromFile("assets/images/icons/file.png", sf::IntRect(0, 0, this->button_width, this->button_width));
-    bg3.setSmooth(true);
-    sf::Sprite file_button;
-    file_button.setTexture(bg3, true);
-    file_button.setPosition(width - (60 + 2 * this->button_width + 20), (this->height / 2) - (this->button_width / 2));
-
     // Draw the header
-    window->draw(container);
+    this->window->draw(container);
 
     // Draw the title
-    window->draw(title);
+    this->window->draw(title);
 
     // Draw buttons
-    window->draw(theme_button);
-    window->draw(save_button);
-    window->draw(file_button);
+    this->draw_theme_button();
+    this->draw_save_button();
+    this->draw_file_button();
 }
 
 void Header::resize() { }
+
+void Header::set_window(sf::RenderWindow * window) {
+    this->window = window;
+}
+
+void Header::handle_click(sf::Event event) {
+    // Get mouse coords
+    int x = event.mouseButton.x;
+    int y = event.mouseButton.y;
+
+    // If the header buttons are clicked
+    if (
+        y >= (this->height / 2) - (this->button_width / 2) && 
+        y <= (this->height / 2) - (this->button_width / 2) + this->button_width
+    ) {
+        // Get window width
+        float width = this->window->getSize().x;
+        
+        // If theme button is clicked
+        if (x >= width - 60 && x <= width - 60 + this->button_width) {
+            std::cout << "Toggling theme" << '\n';
+        }
+
+        // If save button is clicked
+        if (x >= width - (60 + this->button_width + 10) && x <= width - (60 + this->button_width + 10) + this->button_width) {
+            this->document->save();
+        }
+
+        // If file button is clicked
+        if (x >= width - (60 + 2 * this->button_width + 20) && x <= width - (60 + 2 * this->button_width + 20) + this->button_width) {
+            std::cout << "Opening file" << '\n';
+        }
+    }
+}
+
+void Header::draw_theme_button() {
+    // Setup the icon
+    sf::Texture bg;
+    bg.loadFromFile("assets/images/icons/mode.png", sf::IntRect(0, 0, this->button_width, this->button_width));
+    bg.setSmooth(true);
+
+    // Draw the button
+    sf::Sprite button;
+    button.setTexture(bg, true);
+    button.setPosition(window->getSize().x - 60, (this->height / 2) - (this->button_width / 2));
+
+    this->window->draw(button);
+}
+
+void Header::draw_save_button() {
+    // Setup the icon
+    sf::Texture bg;
+    bg.loadFromFile("assets/images/icons/save.png", sf::IntRect(0, 0, this->button_width, this->button_width));
+    bg.setSmooth(true);
+
+    // Draw the button
+    sf::Sprite button;
+    button.setTexture(bg, true);
+    button.setPosition(window->getSize().x - (60 + this->button_width + 10), (this->height / 2) - (this->button_width / 2));
+
+    this->window->draw(button);
+}
+
+void Header::draw_file_button() {
+    // Setup the icon
+    sf::Texture bg;
+    bg.loadFromFile("assets/images/icons/file.png", sf::IntRect(0, 0, this->button_width, this->button_width));
+    bg.setSmooth(true);
+
+    // Draw the button
+    sf::Sprite button;
+    button.setTexture(bg, true);
+    button.setPosition(window->getSize().x - (60 + 2 * this->button_width + 20), (this->height / 2) - (this->button_width / 2));
+
+    this->window->draw(button);
+}
