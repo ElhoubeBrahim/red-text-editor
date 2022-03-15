@@ -8,13 +8,13 @@ Header::Header(Document * document, sf::RenderWindow * window) {
 void Header::draw() {
     // Header container
     sf::RectangleShape container(sf::Vector2f(this->window->getSize().x, this->height));
-    container.setFillColor(sf::Color(17, 17, 17));
+    container.setFillColor(this->document->get_theme_color("header_bg"));
 
     // Adding title to the header
     sf::Text title;
     title.setString(this->document->get_file_name());
     title.setFont(*this->document->get_main_font());
-    title.setFillColor(sf::Color(255, 255, 255));
+    title.setFillColor(this->document->get_theme_color("white"));
     title.setCharacterSize(24);
     title.setPosition((this->height / 2) - 10, 20);
 
@@ -48,10 +48,10 @@ void Header::handle_click(sf::Event event) {
     ) {
         // Get window width
         float width = this->window->getSize().x;
-        
+
         // If theme button is clicked
         if (x >= width - 60 && x <= width - 60 + this->button_width) {
-            std::cout << "Toggling theme" << '\n';
+            this->document->toggle_theme();
         }
 
         // If save button is clicked
@@ -66,11 +66,20 @@ void Header::handle_click(sf::Event event) {
     }
 }
 
+sf::Texture Header::load_bg(std::string name) {
+    // Get chosen theme
+    std::string theme = (this->document->get_theme() == LIGHT_THEME ? "light" : "dark");
+    // Load the picture
+    sf::Texture bg;
+    bg.loadFromFile("assets/images/icons/" + name + "-" + theme + ".png", sf::IntRect(0, 0, this->button_width, this->button_width));
+    bg.setSmooth(true);
+    // Return the bg
+    return bg;
+}
+
 void Header::draw_theme_button() {
     // Setup the icon
-    sf::Texture bg;
-    bg.loadFromFile("assets/images/icons/mode.png", sf::IntRect(0, 0, this->button_width, this->button_width));
-    bg.setSmooth(true);
+    sf::Texture bg = this->load_bg("theme");
 
     // Draw the button
     sf::Sprite button;
@@ -82,9 +91,7 @@ void Header::draw_theme_button() {
 
 void Header::draw_save_button() {
     // Setup the icon
-    sf::Texture bg;
-    bg.loadFromFile("assets/images/icons/save.png", sf::IntRect(0, 0, this->button_width, this->button_width));
-    bg.setSmooth(true);
+    sf::Texture bg = this->load_bg("save");
 
     // Draw the button
     sf::Sprite button;
@@ -96,9 +103,7 @@ void Header::draw_save_button() {
 
 void Header::draw_file_button() {
     // Setup the icon
-    sf::Texture bg;
-    bg.loadFromFile("assets/images/icons/file.png", sf::IntRect(0, 0, this->button_width, this->button_width));
-    bg.setSmooth(true);
+    sf::Texture bg = this->load_bg("file");
 
     // Draw the button
     sf::Sprite button;

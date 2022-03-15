@@ -14,6 +14,8 @@ class Document
         const std::string app_name = APP_NAME;
         const std::string main_font = MAIN_FONT;
         const std::string document_font = CONTENT_FONT;
+        
+        int theme = DARK_THEME;
 
         std::string file_path;
         sf::Font font;
@@ -46,8 +48,12 @@ class Document
         void handle_user_input(sf::Event event);
         void handle_arrows_press(sf::Event &event);
         void handle_shortcuts(sf::Event &event);
-        
+
+        sf::Color get_theme_color(std::string color);
+        int get_theme();
+
         void save();
+        void toggle_theme();
 
     private:
         std::vector<int> get_document_coords(int x, int y);

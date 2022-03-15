@@ -22,6 +22,8 @@ class Header
         void set_window(sf::RenderWindow * window);
 
     private:
+        sf::Texture load_bg(std::string name);
+
         void draw_theme_button();
         void draw_save_button();
         void draw_file_button();

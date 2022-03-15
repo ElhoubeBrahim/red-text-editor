@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
     window.setVerticalSyncEnabled(true);
     document.load_view(&window);
 
-    sf::Color window_background(34, 34, 34);
     sf::Cursor user_cursor;
 
     /**
@@ -106,7 +105,7 @@ int main(int argc, char *argv[])
         }
 
         // Set the background
-        window.clear(window_background);
+        window.clear(document.get_theme_color("bg"));
         // Set the view
         window.setView(document.get_view());
         // Draw the editor lines

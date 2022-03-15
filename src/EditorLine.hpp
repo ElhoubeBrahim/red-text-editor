@@ -16,6 +16,9 @@ class EditorLine
         int size;
         float width = 0;
 
+        sf::Color text_color = sf::Color(0, 0, 0);
+        sf::Color content_color = sf::Color(0, 0, 0);
+
         sf::Text number_text;
 
         std::vector<sf::Text> line_chars;
@@ -23,6 +26,9 @@ class EditorLine
     public:
         EditorLine();
         EditorLine(std::string text, sf::Font *_main_font, sf::Font *_content_font);
+        
+        void set_colors(sf::Color text_color, sf::Color content_color);
+        
         sf::Text get_number_text();
         std::vector<sf::Text> get_content_chars();
         int get_size();

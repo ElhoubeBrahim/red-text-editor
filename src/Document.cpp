@@ -3,6 +3,7 @@
 #include "Utils.hpp"
 #include <math.h>
 #include <fstream>
+#include <map>
 
 /**
  * @brief Construct a new Document:: Document object
@@ -67,6 +68,42 @@ sf::View Document::get_view() {
 }
 
 /**
+ * @brief Get colors according to the shosen theme
+ * 
+ * @param color 
+ * @return sf::Color 
+ */
+sf::Color Document::get_theme_color(std::string color) {
+    // Init colors container
+    std::map<std::string, sf::Color> colors;
+
+    // Check the theme
+    switch (this->theme) {
+        case LIGHT_THEME:
+            // Light theme
+            colors = ThemeColors::LightTheme().get_colors();
+            break;
+
+        case DARK_THEME:
+            // Dark theme
+            colors = ThemeColors::DarkTheme().get_colors();
+            break;
+
+        /*
+         * More themes may be added here 
+        */
+        
+        default:
+            // Default is the dark
+            colors = ThemeColors::DarkTheme().get_colors();
+            break;
+    }
+
+    // Return the color if exists, else return black
+    return colors.count(color) > 0 ? colors.at(color) : sf::Color(0, 0, 0);
+}
+
+/**
  * @brief Handle window resise
  * 
  * @param height 
@@ -100,6 +137,15 @@ sf::Font * Document::get_main_font() {
 }
 
 /**
+ * @brief Get the chosen theme
+ * 
+ * @return int 
+ */
+int Document::get_theme() {
+    return this->theme;
+}
+
+/**
  * @brief Draw the document's content
  * 
  * @param window 
@@ -114,6 +160,8 @@ void Document::draw(sf::RenderWindow *window) {
 
     // Loop through document lines
     for (EditorLine line : this->lines) {
+        // Set the line colors according to the chosen theme
+        line.set_colors(this->get_theme_color("text_color"), this->get_theme_color("content_color"));
         // Set the count number
         line.set_number(i);
         // Draw the number of the line in the margin
@@ -441,6 +489,14 @@ void Document::save() {
 
     // Close the file
     file.close();
+}
+
+/**
+ * @brief Switch themes
+ * 
+ */
+void Document::toggle_theme() {
+    this->theme = !this->theme;
 }
 
 /**

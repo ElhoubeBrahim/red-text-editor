@@ -31,6 +31,17 @@ EditorLine::EditorLine(std::string text, sf::Font *_main_font, sf::Font *_conten
 }
 
 /**
+ * @brief Set text colors
+ * 
+ * @param text_color 
+ * @param content_color 
+ */
+void EditorLine::set_colors(sf::Color text_color, sf::Color content_color) {
+    this->text_color = text_color;
+    this->content_color = content_color;
+}
+
+/**
  * @brief Get the line number widget
  * 
  * @return sf::Text 
@@ -112,7 +123,7 @@ void EditorLine::draw_number() {
     // Draw text widget
     this->number_text = this->draw_text(std::to_string(this->line_number), 10, false);
     // Set color
-    this->number_text.setFillColor(sf::Color(119, 119, 119));
+    this->number_text.setFillColor(this->text_color);
 }
 
 /**
@@ -132,7 +143,7 @@ void EditorLine::draw_chars() {
     for (char c : this->content) {
         // Draw char widget
         char_text = this->draw_text(std::string(1, c), x, true);
-        char_text.setFillColor(sf::Color(221, 221, 221));
+        char_text.setFillColor(this->content_color);
 
         // Calculate line width
         bounds = char_text.getLocalBounds();
