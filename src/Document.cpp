@@ -59,6 +59,16 @@ void Document::load_view(sf::RenderWindow * window) {
 }
 
 /**
+ * @brief If the document is saved
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Document::is_saved() {
+    return this->saved;
+}
+
+/**
  * @brief Get the camera
  * 
  * @return sf::View 
@@ -401,6 +411,9 @@ void Document::handle_user_input(sf::Event event) {
             break;
         }
     }
+
+    // Mark document as changed
+    this->saved = false;
 }
 
 /**
@@ -489,6 +502,9 @@ void Document::save() {
 
     // Close the file
     file.close();
+
+    // Mark document as saved
+    this->saved = true;
 }
 
 /**

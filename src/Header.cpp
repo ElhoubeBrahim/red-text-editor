@@ -12,7 +12,7 @@ void Header::draw() {
 
     // Adding title to the header
     sf::Text title;
-    title.setString(this->document->get_file_name());
+    title.setString(this->document->get_file_name() + (!this->document->is_saved() ? " *" : ""));
     title.setFont(*this->document->get_main_font());
     title.setFillColor(this->document->get_theme_color("white"));
     title.setCharacterSize(24);

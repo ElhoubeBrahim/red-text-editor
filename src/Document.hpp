@@ -27,11 +27,14 @@ class Document
         float max_height;
         float max_width;
 
+        bool saved = true;
+
     public:
         Document(std::string path);
         void validate_file_path();
         void load_lines();
         void load_fonts();
+        bool is_saved();
 
         std::string get_file_name();
         sf::Font * get_main_font();
