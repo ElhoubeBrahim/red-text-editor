@@ -11,18 +11,7 @@
  * @param path 
  */
 Document::Document(std::string path) {
-    // Validate and setup file
-    this->file_path = path;
-    this->validate_file_path();
-    std::cout << "Opening " << Utils::colorify(path, "\033[32m") << " ..." << '\n';
-
-    // Load main font and lines
-    this->load_fonts();
-    this->load_lines();
-
-    // Set up the cursor
-    this->cursor.set_line(this->lines.at(0));
-    this->get_cursor()->set_lines_count(this->lines.size());
+    this->open_file(path);
 }
 
 /**
@@ -37,6 +26,26 @@ void Document::validate_file_path() {
         std::cout << '\t' << "Can not open the file : " << this->file_path << ". No such file or directory.";
         exit(0);
     }
+}
+
+/**
+ * @brief Open and load content of the chosed file
+ * 
+ * @param path 
+ */
+void Document::open_file(std::string path) {
+    // Validate and setup file
+    this->file_path = path;
+    this->validate_file_path();
+    std::cout << "Opening " << Utils::colorify(path, "\033[32m") << " ..." << '\n';
+
+    // Load main font and lines
+    this->load_fonts();
+    this->load_lines();
+
+    // Set up the cursor
+    this->cursor.set_line(this->lines.at(0));
+    this->get_cursor()->set_lines_count(this->lines.size());
 }
 
 /**
@@ -193,10 +202,26 @@ void Document::draw(sf::RenderWindow *window) {
 
     // Draw the cursor
     if(Cursor::toggle_visibility()) window->draw(this->get_cursor()->get_shape());
-    
+
     // Tell the camera about the document's dimentions
     this->view.set_max_height(this->max_height);
     this->view.set_max_width(this->max_width);
+
+    // Highlight the active line
+    this->heighlight_active_line(window);
+}
+
+/**
+ * @brief Heighlight the active line
+ * 
+ * @param window 
+ */
+void Document::heighlight_active_line(sf::RenderWindow *window) {
+    // Draw the heighlight rectangle
+    sf::RectangleShape heighlight(sf::Vector2f(this->max_width + 100, LINE_HEIGHT + 4));
+    heighlight.setFillColor(this->get_theme_color("heighlight"));
+    heighlight.setPosition(LEFT_MARGIN - 3, TOP_MARGIN + (this->get_cursor()->row_number() * LINE_HEIGHT) - 1);
+    window->draw(heighlight);
 }
 
 /**
@@ -223,6 +248,9 @@ bool Document::file_exists() {
  * 
  */
 void Document::load_lines() {
+    // Init document lines
+    this->lines.clear();
+    // This is a helper variable
     std::string line;
     // Open the file
     std::ifstream file(this->file_path);

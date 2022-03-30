@@ -32,6 +32,7 @@ class Document
     public:
         Document(std::string path);
         void validate_file_path();
+        void open_file(std::string path);
         void load_lines();
         void load_fonts();
         bool is_saved();
@@ -66,6 +67,8 @@ class Document
 
         void handle_vertical_scroll(sf::Event event);
         void handle_horizontal_scroll(sf::Event event);
+
+        void heighlight_active_line(sf::RenderWindow *window);
 };
 
 #endif
