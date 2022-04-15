@@ -23,7 +23,7 @@ void Document::validate_file_path() {
     if (this->file_path.empty() || !this->file_exists()) {
         // Break the program
         std::cout << Utils::colorify("Red Text Error: A valid input file is needed", "\033[31m") << '\n';
-        std::cout << '\t' << "Can not open the file : " << this->file_path << ". No such file or directory.";
+        std::cout << '\t' << "Can not open the file : " << this->file_path << ". No such file or directory." << '\n';
         exit(0);
     }
 }

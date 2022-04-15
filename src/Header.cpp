@@ -68,9 +68,11 @@ void Header::handle_click(sf::Event event) {
             // Get the chosed file name
             fgets(file_name, 1024, f);
 
-            // Open the chosed file
-            std::string path = std::string(file_name);
-            this->document->open_file(path.substr(0, path.size() - 1));
+            // Open the chosed file if there is no error
+            if (pclose(f) == 0) {
+                std::string path = std::string(file_name);
+                this->document->open_file(path.substr(0, path.size() - 1));
+            }
         }
     }
 }
