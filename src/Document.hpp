@@ -6,6 +6,8 @@
 #include "../env.hpp"
 #include "EditorLine.hpp"
 #include "EditorView.hpp"
+#include "Memento.hpp"
+#include "History.hpp"
 #include "Cursor.hpp"
 
 class Document
@@ -22,6 +24,7 @@ class Document
         sf::Font content_font;
         EditorView view;
         std::vector<EditorLine> lines;
+        History history = History();
         Cursor cursor = Cursor(0, 0);
 
         float max_height;
@@ -62,6 +65,8 @@ class Document
     private:
         std::vector<int> get_document_coords(int x, int y);
         bool file_exists();
+
+        void restore_snapshot();
 
         bool ctrl_is_pressed();
 

@@ -43,6 +43,9 @@ void Document::open_file(std::string path) {
     this->load_fonts();
     this->load_lines();
 
+    // Clear actions history
+    this->history.clear();
+
     // Set up the cursor
     this->cursor.set_line(this->lines.at(0));
     this->get_cursor()->set_lines_count(this->lines.size());
@@ -383,6 +386,9 @@ void Document::handle_user_input(sf::Event event) {
     int row = this->get_cursor()->row_number();
     int col = this->get_cursor()->col_number();
 
+    // Store a snapshot of the current's document state
+    this->history.push(Memento(this->lines, row, col), History::UNDO_QUEUE);
+
     // Check the value of the entered char
     switch (c)
     {
@@ -420,14 +426,14 @@ void Document::handle_user_input(sf::Event event) {
             } else if (col != 0) {
                 // Delete the char
                 this->lines.at(row).delete_char_at(col);
-            
+
                 // Move the cursor one step left
                 this->get_cursor()->set_line(this->lines.at(row));
                 this->get_cursor()->move_left();
             }
             break;
         }
-    
+
         // Any other char
         default: {
             // Insert the char
@@ -505,12 +511,45 @@ void Document::handle_shortcuts(sf::Event &event) {
     int row = this->get_cursor()->row_number();
     int col = this->get_cursor()->col_number();
 
-    // If "ctrl + s" is pressed
-    if (this->ctrl_is_pressed() && event.key.code == sf::Keyboard::S) {
-        // Save the file
-        std::cout << "Saving File ..." << '\n';
-        this->save();
-        std::cout << "File saved " << Utils::colorify(this->file_path, "\033[32m") << '\n';
+    // If the shortcut mode is activated
+    if (this->ctrl_is_pressed()) {
+
+        switch (event.key.code)
+        {
+            // If "ctrl + s" is pressed
+            case sf::Keyboard::S: {
+                // Save the file
+                std::cout << "Saving File ..." << '\n';
+                this->save();
+                std::cout << "File saved " << Utils::colorify(this->file_path, "\033[32m") << '\n';
+                break;
+            }
+
+            // If "ctrl + z" is pressed
+            case sf::Keyboard::Z: {
+                // Store current document's state
+                this->history.push(
+                    Memento(
+                        this->lines, 
+                        this->get_cursor()->row_number(), 
+                        this->get_cursor()->col_number()
+                    ),
+                    History::REDO_QUEUE
+                );
+                // Undo the last operation
+                this->history.undo();
+                this->restore_snapshot();
+                break;
+            }
+
+            // If "ctrl + y" is pressed
+            case sf::Keyboard::Y: {
+                // redo the last operation
+                this->history.redo();
+                this->restore_snapshot();
+                break;
+            }
+        }
     }
 }
 
@@ -533,6 +572,33 @@ void Document::save() {
 
     // Mark document as saved
     this->saved = true;
+}
+
+/**
+ * @brief Restore the state of the documet at a given snapshot
+ * 
+ * @param snapshot 
+ */
+void Document::restore_snapshot() {
+    if (!this->history.has_snapshot()) return;
+
+    Memento snapshot = this->history.get_snapshot();
+ 
+    // Get coords
+    std::vector<int> coords = snapshot.get_coords();
+    int row = coords.at(0);
+    int col = coords.at(1);
+
+    // Undo
+    this->lines = snapshot.get_lines();
+    
+    // Move cursor
+    this->get_cursor()->set_line(this->lines.at(row));
+    this->get_cursor()->move_to(row, col);
+    this->get_cursor()->set_lines_count(this->lines.size());
+
+    // Mark document as changed
+    this->saved = false;
 }
 
 /**
