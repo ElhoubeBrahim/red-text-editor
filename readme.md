@@ -50,18 +50,21 @@ This is a simple explaination to have a general overview about my source code :
 | `Cursor`       | This is the visual cursor, it holds its position and the blinking rectangle |
 | `EditorView`   | This class is useful to handle scrolling and resizing events, in addition it has the sfml view object as the main camera |
 | `Utils`        | This class is a collection of some useful methods |
+| `Header`       | This class contains the header draw method and header buttons actions such as switch theme, open new file or save the existing one |
+| `History`      | Here is all the states - mementos - of my document are stored, it helps to perform undo and redo operations  |
+| `Memento`      | An instance of this class holds the state of the document at a given moment. The state is nothing but lines content and (row, col) cursor coords |
 
 ## Todo
 
 This is my first gui application in cpp, so I am sure there is a lot of imporovements to do and bugs to fix. For this reason, I made this todo list to store the next steps :
 
 - [x] Enable saving file
+- [x] Add theme switcher (Dark, Light)
+- [x] Highlight active lines
+- [x] Undo and Redo actions - ctrl + z && ctrl + y
 - [ ] Add size and type constraints to files
 - [ ] Add settings page - to change fonts, sizes and colors
 - [ ] Add arabic support
-- [ ] Add theme switcher (Dark, Light)
-- [ ] Highlight active lines
-- [ ] Undo and Redo actions - ctrl + z && ctrl + y
 - [ ] Allow text selection
 - [ ] Add a scroll bar
 - [ ] Add words dictionary
