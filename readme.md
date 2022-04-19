@@ -2,9 +2,9 @@
 
 # Red Text Editor
 
-[![Forks](https://img.shields.io/github/forks/ElhoubeBrahim/red-text-editor)](https://github.com/ElhoubeBrahim/red_text_editor/network)
-[![Stars](https://img.shields.io/github/stars/ElhoubeBrahim/red-text-editor)](https://github.com/ElhoubeBrahim/red_text_editor/stargazers)
-[![Issues](https://img.shields.io/github/issues/ElhoubeBrahim/red-text-editor)](https://github.com/ElhoubeBrahim/red_text_editor/issues)
+[![Forks](https://img.shields.io/github/forks/ElhoubeBrahim/red-text-editor)](https://github.com/ElhoubeBrahim/red-text-editor/network)
+[![Stars](https://img.shields.io/github/stars/ElhoubeBrahim/red-text-editor)](https://github.com/ElhoubeBrahim/red-text-editor/stargazers)
+[![Issues](https://img.shields.io/github/issues/ElhoubeBrahim/red-text-editor)](https://github.com/ElhoubeBrahim/red-text-editor/issues)
 </center>
 
 ## About the project
