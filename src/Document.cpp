@@ -199,7 +199,7 @@ void Document::draw(sf::RenderWindow *window) {
             // If the current char is under selection
             if (this->textSelection.contains(i, j))
                 // Draw a light rectangle behind it
-                window->draw(this->textSelection.get_drawing(character, this->get_theme_color("highlight")));
+                window->draw(this->textSelection.get_drawing(character, this->get_theme_color("selection")));
 
             // Next char count
             j++;
@@ -220,8 +220,9 @@ void Document::draw(sf::RenderWindow *window) {
     this->view.set_max_height(this->max_height);
     this->view.set_max_width(this->max_width);
 
-    // Highlight the active line
-    this->highlight_active_line(window);
+    if (this->textSelection.empty())
+        // Highlight the active line
+        this->highlight_active_line(window);
 }
 
 /**
