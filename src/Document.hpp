@@ -81,7 +81,7 @@ class Document
         void handle_vertical_scroll(sf::Event event);
         void handle_horizontal_scroll(sf::Event event);
 
-        void heighlight_active_line(sf::RenderWindow *window);
+        void highlight_active_line(sf::RenderWindow *window);
 };
 
 #endif

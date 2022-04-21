@@ -199,7 +199,7 @@ void Document::draw(sf::RenderWindow *window) {
             // If the current char is under selection
             if (this->textSelection.contains(i, j))
                 // Draw a light rectangle behind it
-                window->draw(this->textSelection.get_drawing(character, this->get_theme_color("heighlight")));
+                window->draw(this->textSelection.get_drawing(character, this->get_theme_color("highlight")));
 
             // Next char count
             j++;
@@ -221,20 +221,20 @@ void Document::draw(sf::RenderWindow *window) {
     this->view.set_max_width(this->max_width);
 
     // Highlight the active line
-    this->heighlight_active_line(window);
+    this->highlight_active_line(window);
 }
 
 /**
- * @brief Heighlight the active line
+ * @brief Highlight the active line
  * 
  * @param window 
  */
-void Document::heighlight_active_line(sf::RenderWindow *window) {
-    // Draw the heighlight rectangle
-    sf::RectangleShape heighlight(sf::Vector2f(this->max_width + 100, LINE_HEIGHT + 4));
-    heighlight.setFillColor(this->get_theme_color("heighlight"));
-    heighlight.setPosition(LEFT_MARGIN - 3, TOP_MARGIN + (this->get_cursor()->row_number() * LINE_HEIGHT) - 1);
-    window->draw(heighlight);
+void Document::highlight_active_line(sf::RenderWindow *window) {
+    // Draw the highlight rectangle
+    sf::RectangleShape highlight(sf::Vector2f(this->max_width + 100, LINE_HEIGHT + 4));
+    highlight.setFillColor(this->get_theme_color("highlight"));
+    highlight.setPosition(LEFT_MARGIN - 3, TOP_MARGIN + (this->get_cursor()->row_number() * LINE_HEIGHT) - 1);
+    window->draw(highlight);
 }
 
 /**

@@ -14,7 +14,7 @@ namespace ThemeColors
             sf::Color HEADER_BG;
             sf::Color TEXT_COLOR;
             sf::Color CONTENT_COLOR;
-            sf::Color HEIGHLIGHT;
+            sf::Color HIGHLIGHTT;
 
         public:
             std::map<std::string, sf::Color> get_colors() {
@@ -25,7 +25,7 @@ namespace ThemeColors
                 colors.insert(std::pair<std::string, sf::Color>("header_bg", this->HEADER_BG));
                 colors.insert(std::pair<std::string, sf::Color>("text_color", this->TEXT_COLOR));
                 colors.insert(std::pair<std::string, sf::Color>("content_color", this->CONTENT_COLOR));
-                colors.insert(std::pair<std::string, sf::Color>("heighlight", this->HEIGHLIGHT));
+                colors.insert(std::pair<std::string, sf::Color>("highlight", this->HIGHLIGHTT));
 
                 return colors;
             }
@@ -40,7 +40,7 @@ namespace ThemeColors
                 this->HEADER_BG = sf::Color(33, 37, 43);
                 this->TEXT_COLOR = sf::Color(119, 119, 119);
                 this->CONTENT_COLOR = sf::Color(221, 221, 221);
-                this->HEIGHLIGHT = sf::Color(255, 255, 255, 50);
+                this->HIGHLIGHTT = sf::Color(255, 255, 255, 50);
             }
     };
 
@@ -53,7 +53,7 @@ namespace ThemeColors
                 this->HEADER_BG = sf::Color(234, 234, 235);
                 this->TEXT_COLOR = sf::Color(157, 157, 157);
                 this->CONTENT_COLOR = sf::Color(68, 68, 68);
-                this->HEIGHLIGHT = sf::Color(0, 0, 0, 50);
+                this->HIGHLIGHTT = sf::Color(0, 0, 0, 50);
             }
     };
 }
