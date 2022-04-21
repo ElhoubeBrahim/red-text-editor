@@ -177,8 +177,9 @@ void Document::draw(sf::RenderWindow *window) {
     this->max_height = 0;
     this->max_width = 0;
 
-    // Init the counter
+    // Init counters
     int i = 0;
+    int j = 0;
 
     // Loop through document lines
     for (EditorLine line : this->lines) {
@@ -190,9 +191,18 @@ void Document::draw(sf::RenderWindow *window) {
         window->draw(line.get_number_text());
 
         // Loop through line chars
+        j = 0;
         for (sf::Text character : line.get_content_chars()) {
             // Draw the char
             window->draw(character);
+
+            // If the current char is under selection
+            if (this->textSelection.contains(i, j))
+                // Draw a light rectangle behind it
+                window->draw(this->textSelection.get_drawing(character, this->get_theme_color("heighlight")));
+
+            // Next char count
+            j++;
         }
 
         // Update the document dimentions
@@ -282,6 +292,42 @@ void Document::place_cursor_in(int x, int y) {
     this->get_cursor()->set_line(this->lines.at(coords.at(0)));
     // Move cursor
     this->get_cursor()->move_to(coords.at(0), coords.at(1));
+}
+
+/**
+ * @brief Get text selection instance
+ * 
+ * @return TextSelection* 
+ */
+TextSelection * Document::get_text_selection() {
+    return &this->textSelection;
+}
+
+/**
+ * @brief Set text selection boundaries
+ * 
+ * @param x 
+ * @param y 
+ */
+void Document::select_text(int x, int y) {
+    // Transform (x, y) coords to (row, col) coords
+    std::vector<int> coords = this->get_document_coords(x, y);
+
+    // If this is the first selected zone
+    if (this->textSelection.empty()) {
+        // Get cursor position
+        int row = this->get_cursor()->row_number();
+        int col = this->get_cursor()->col_number();
+
+        // Set the selection zone start coords
+        this->textSelection.set_start(row, col);
+    }
+
+    // Set selection zone end coords
+    this->textSelection.set_end(coords.at(0), coords.at(1));
+
+    // Place the cursor at the end of the selecion zone
+    this->place_cursor_in(x, y);
 }
 
 /**

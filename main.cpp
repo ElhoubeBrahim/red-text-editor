@@ -73,6 +73,8 @@ int main(int argc, char *argv[])
 
             // On mouse click => Remove selections and Move cursor
             if (event.type == sf::Event::MouseButtonPressed) {
+                // Unselect text
+                document.get_text_selection()->clear();
 
                 // If the left mouse button is clicked
                 if (event.mouseButton.button == sf::Mouse::Left) {
@@ -84,11 +86,35 @@ int main(int argc, char *argv[])
                     int mouse_y = coords.y - TOP_MARGIN;
 
                     // Move document cursor
-                    if (mouse_y >= 0)
+                    if (mouse_y >= 0) {
+                        document.mouse_clicked = true;
                         document.place_cursor_in(mouse_x, mouse_y);
-                    
+                    }
+
                     // Check if a button is clicked in the header
                     header.handle_click(event);
+                }
+            }
+
+            // If the mouse click id done
+            if (event.type == sf::Event::MouseButtonReleased) {
+                document.mouse_clicked = false;
+            }
+
+            // If mouse cursor moved on screen
+            if (event.type == sf::Event::MouseMoved) {
+                // If drag => click + move
+                if (document.mouse_clicked) {
+                    // Get cursor coords
+                    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                    sf::Vector2f coords = window.mapPixelToCoords(pixelPos);
+
+                    int mouse_x = coords.x;
+                    int mouse_y = coords.y - TOP_MARGIN;
+
+                    if (mouse_y >= 0)
+                        // Create a new text selection
+                        document.select_text(mouse_x, mouse_y);
                 }
             }
 

@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "../env.hpp"
 #include "EditorLine.hpp"
+#include "TextSelection.hpp"
 #include "EditorView.hpp"
 #include "Memento.hpp"
 #include "History.hpp"
@@ -24,6 +25,7 @@ class Document
         sf::Font content_font;
         EditorView view;
         std::vector<EditorLine> lines;
+        TextSelection textSelection;
         History history = History();
         Cursor cursor = Cursor(0, 0);
 
@@ -31,6 +33,9 @@ class Document
         float max_width;
 
         bool saved = true;
+
+    public:
+        bool mouse_clicked = false;
 
     public:
         Document(std::string path);
@@ -61,6 +66,9 @@ class Document
 
         void save();
         void toggle_theme();
+
+        TextSelection * get_text_selection();
+        void select_text(int x, int y);
 
     private:
         std::vector<int> get_document_coords(int x, int y);
