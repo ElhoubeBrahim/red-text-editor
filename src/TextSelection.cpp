@@ -95,6 +95,16 @@ bool TextSelection::contains(int row, int col) {
     // Get the selection direction
     int dir = this->direction();
 
+    // If only one line is selected
+    if (start.at(0) == end.at(0)) {
+        return (
+            start.at(0) == row &&
+            start.at(1) * dir <= col * dir &&
+            end.at(1) * dir >= col * dir
+        );
+    }
+
+    // Else
     return (
         // If it's in the first row in selection
         (start.at(0) == row && start.at(1) * dir <= col * dir) ||
