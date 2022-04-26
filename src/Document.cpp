@@ -436,6 +436,41 @@ void Document::handle_user_input(sf::Event event) {
     // Store a snapshot of the current's document state
     this->history.push(Memento(this->lines, row, col), History::UNDO_QUEUE);
 
+    // If there is a selected text in the document
+    if (!this->textSelection.empty()) {
+        // Get selection boundaries
+        std::vector<int> start = this->textSelection.get_boundaries().at(0);
+        std::vector<int> end = this->textSelection.get_boundaries().at(1);
+
+        // If only one line is selected
+        if (start.at(0) == end.at(0)) {
+            this->lines.at(start.at(0)).delete_word(start.at(1), end.at(1));
+        } else {
+            // Remove selected parts from start and end lines
+            this->lines.at(start.at(0)).delete_word(start.at(1), this->lines.at(start.at(0)).get_size() - 1);
+            this->lines.at(end.at(0)).delete_word(0, end.at(1));
+
+            // Merge the rest content of start and end lines
+            this->lines.at(start.at(0)).merge_with(this->lines.at(end.at(0)));
+        
+            // Delete selected lines between start and end lines
+            this->lines.erase(
+                this->lines.begin() + start.at(0) + 1,
+                this->lines.begin() + end.at(0) + 1
+            );
+        }
+
+        // Place cursor at the begining of the selection
+        this->get_cursor()->move_to(
+            start.at(0),
+            start.at(1)
+        );
+
+        // Update document coords to the selection start
+        row = start.at(0);
+        col = start.at(1);
+    }
+
     // Check the value of the entered char
     switch (c)
     {
@@ -457,6 +492,9 @@ void Document::handle_user_input(sf::Event event) {
 
         // Delete char
         case 8: {
+            // If there is a selection
+            if (!this->textSelection.empty()) break;
+
             // If the deleted char is a break line
             if (col == 0 && row != 0) {
                 // Get the size of previous line
@@ -492,6 +530,9 @@ void Document::handle_user_input(sf::Event event) {
             break;
         }
     }
+
+    // Empty the selection
+    this->textSelection.clear();
 
     // Mark document as changed
     this->saved = false;

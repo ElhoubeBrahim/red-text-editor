@@ -184,6 +184,21 @@ void EditorLine::delete_char_at(int col) {
 }
 
 /**
+ * @brief Delete portion of line content between start and end position
+ * 
+ * @param start 
+ * @param end 
+ */
+void EditorLine::delete_word(int start, int end) {
+    // Remove the portion from the text content
+    this->content.erase(start, end - start);
+    // Remove old created chars
+    this->line_chars.clear();
+    // Redraw chars
+    this->draw_chars();
+}
+
+/**
  * @brief Break line at the given position
  * 
  * @param col 

@@ -45,6 +45,32 @@ void TextSelection::set_end(int row, int col) {
 }
 
 /**
+ * @brief Get selection start and end coords
+ * 
+ * @return std::vector<std::vector<int>> 
+ */
+std::vector<std::vector<int>> TextSelection::get_boundaries() {
+    std::vector<std::vector<int>> boundaries;
+
+    if (
+        // If it is a normal select - From start to end
+        this->start.at(0) < this->end.at(0) ||
+        (
+            this->start.at(0) == this->end.at(0) && 
+            this->start.at(1) < this->end.at(1)
+        )
+    ) {
+        boundaries.push_back(this->start);
+        boundaries.push_back(this->end);
+    } else { // From end to start
+        boundaries.push_back(this->end);
+        boundaries.push_back(this->start);
+    }
+
+    return boundaries;
+}
+
+/**
  * @brief Check if the selection zone is empty
  * 
  * @return true 

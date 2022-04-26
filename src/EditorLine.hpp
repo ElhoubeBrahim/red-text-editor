@@ -37,6 +37,7 @@ class EditorLine
 
         void insert_char_at(char c, int col);
         void delete_char_at(int col);
+        void delete_word(int start, int end);
         std::string break_at(int col);
         void merge_with(EditorLine line);
 
