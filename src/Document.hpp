@@ -69,6 +69,7 @@ class Document
 
         TextSelection * get_text_selection();
         void select_text(int x, int y);
+        void remove_selected_content();
 
     private:
         std::vector<int> get_document_coords(int x, int y);

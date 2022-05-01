@@ -18,6 +18,24 @@ void TextSelection::clear() {
     this->set_start(-1, -1);
     // Init end coords
     this->set_end(-1, -1);
+    // Delete selected text
+    this->clear_content();
+}
+
+/**
+ * @brief Clear selected text content
+ * 
+ */
+void TextSelection::clear_content() {
+    this->content.clear();
+}
+
+/**
+ * @brief Copy selected text to clipboard
+ * 
+ */
+void TextSelection::copy() {
+    sf::Clipboard::setString(this->content);
 }
 
 /**
@@ -42,6 +60,15 @@ void TextSelection::set_end(int row, int col) {
     this->end.clear();
     this->end.push_back(row);
     this->end.push_back(col);
+}
+
+/**
+ * @brief Add text to already selected text content
+ * 
+ * @param str 
+ */
+void TextSelection::add_content(std::string str) {
+    this->content.append(str);
 }
 
 /**
