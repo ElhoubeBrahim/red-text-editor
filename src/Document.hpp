@@ -65,6 +65,7 @@ class Document
         int get_theme();
 
         void save();
+        void paste();
         void toggle_theme();
 
         TextSelection * get_text_selection();

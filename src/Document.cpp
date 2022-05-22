@@ -4,6 +4,7 @@
 #include <math.h>
 #include <fstream>
 #include <map>
+#include <sstream>
 
 /**
  * @brief Construct a new Document:: Document object
@@ -680,7 +681,18 @@ void Document::handle_shortcuts(sf::Event &event) {
                 this->textSelection.copy();
                 // Remove cutted text
                 this->remove_selected_content();
-                // Move cursor to the start of selected text
+                // Mark document as changed
+                this->saved = false;
+                break;
+            }
+
+            // If "ctrl + v" is pressed
+            case sf::Keyboard::V: {
+                // Remove selected text
+                this->remove_selected_content();
+
+                // Paste clipboard content
+                this->paste();
                 break;
             }
         }
@@ -706,6 +718,66 @@ void Document::save() {
 
     // Mark document as saved
     this->saved = true;
+}
+
+/**
+ * @brief Add content from clpboard
+ * 
+ */
+void Document::paste() {
+    // Get copied text
+    std::string text = sf::Clipboard::getString().toAnsiString();
+    std::vector<std::string> pastedLines;
+
+    // Text to lines vector
+    std::stringstream stream(text);
+    std::string line;
+    while(getline(stream, line)) {
+        pastedLines.push_back(line);
+    }
+
+    // If there is a text to paste
+    if (pastedLines.size() > 0) {
+        // Get cursor position
+        int row = this->get_cursor()->row_number();
+        int col = this->get_cursor()->col_number();
+
+        // Merge first lines
+        this->lines.at(row).insert_word(col, pastedLines.at(0));
+        
+        // If there is more lines to paste
+        if (pastedLines.size() > 1) {
+            // Break start line
+            std::string content = this->lines.at(row).break_at(col + pastedLines.at(0).size());
+            
+            // Insert the other lines
+            for (int i = 1; i < pastedLines.size() - 1; i++) {
+                this->lines.insert(
+                    this->lines.begin() + row + i, 
+                    EditorLine(pastedLines.at(i), &this->font, &this->content_font)
+                );
+            }
+
+            // Insert the break content at the end
+            this->lines.insert(
+                this->lines.begin() + row + pastedLines.size() - 1, 
+                EditorLine(content, &this->font, &this->content_font)
+            );
+
+            // Merge the last lines
+            this->lines.at(row + pastedLines.size() - 1).insert_word(0, pastedLines.back());
+            col = 0;
+        }
+
+        // Move cursor to the end of pasted text
+        this->get_cursor()->move_to(
+            row + pastedLines.size() - 1,
+            col + pastedLines.back().size()
+        );
+
+        // Mark document as changed
+        this->saved = false;
+    }
 }
 
 /**

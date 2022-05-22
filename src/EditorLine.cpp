@@ -184,6 +184,21 @@ void EditorLine::delete_char_at(int col) {
 }
 
 /**
+ * @brief Insert more than one char at a given position
+ * 
+ * @param col 
+ * @param word 
+ */
+void EditorLine::insert_word(int col, std::string word) {
+    // Add the entered string to the text content
+    this->content.insert(col, word);
+    // Remove old created chars
+    this->line_chars.clear();
+    // Redraw chars
+    this->draw_chars();
+}
+
+/**
  * @brief Delete portion of line content between start and end position
  * 
  * @param start 
