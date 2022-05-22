@@ -677,6 +677,8 @@ void Document::handle_shortcuts(sf::Event &event) {
 
             // If "ctrl + x" is pressed
             case sf::Keyboard::X: {
+                // Store a snapshot of the current's document state
+                this->history.push(Memento(this->lines, row, col), History::UNDO_QUEUE);
                 // Copy selected text to clipboard
                 this->textSelection.copy();
                 // Remove cutted text
@@ -688,9 +690,10 @@ void Document::handle_shortcuts(sf::Event &event) {
 
             // If "ctrl + v" is pressed
             case sf::Keyboard::V: {
+                // Store a snapshot of the current's document state
+                this->history.push(Memento(this->lines, row, col), History::UNDO_QUEUE);
                 // Remove selected text
                 this->remove_selected_content();
-
                 // Paste clipboard content
                 this->paste();
                 break;
