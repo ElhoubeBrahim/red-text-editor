@@ -53,6 +53,7 @@ This is a simple explaination to have a general overview about my source code :
 | `Header`       | This class contains the header draw method and header buttons actions such as switch theme, open new file or save the existing one |
 | `History`      | Here is all the states - mementos - of my document are stored, it helps to perform undo and redo operations  |
 | `Memento`      | An instance of this class holds the state of the document at a given moment. The state is nothing but lines content and (row, col) cursor coords |
+| `TextSelection`| This class is used to describe the user selected text using document coords and content. It provides helper methods to handle and manage the selected zone |
 
 ## Todo
 
@@ -62,10 +63,10 @@ This is my first gui application in cpp, so I am sure there is a lot of imporove
 - [x] Add theme switcher (Dark, Light)
 - [x] Highlight active lines
 - [x] Undo and Redo actions - ctrl + z && ctrl + y
-- [ ] Add size and type constraints to files
+- [x] Allow text selection
+- [x] Allow text copy/paste - ctrl + c && ctrl + x && ctrl + v
 - [ ] Add settings page - to change fonts, sizes and colors
 - [ ] Add arabic support
-- [ ] Allow text selection
 - [ ] Add a scroll bar
 - [ ] Add words dictionary
 
