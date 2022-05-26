@@ -574,8 +574,13 @@ void Document::handle_arrows_press(sf::Event &event) {
     // If shortcut mode is activated
     if (this->ctrl_is_pressed()) return;
 
-    // Unselect text
-    this->get_text_selection()->clear();
+    // If one of arrow keys is pressed
+    if (
+        event.key.code == sf::Keyboard::Up || 
+        event.key.code == sf::Keyboard::Left ||
+        event.key.code == sf::Keyboard::Down ||
+        event.key.code == sf::Keyboard::Right
+    ) this->get_text_selection()->clear(); // Unselect text
 
     // Get the document coords
     int row = this->get_cursor()->row_number();
