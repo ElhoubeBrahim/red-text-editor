@@ -24,6 +24,11 @@ int main(int argc, char *argv[])
 
     sf::Cursor user_cursor;
 
+    // Set the app logo
+    sf::Image icon;
+    icon.loadFromFile("assets/images/logo.png");
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
     /**
      * Create the editor header
      * ===================================================
